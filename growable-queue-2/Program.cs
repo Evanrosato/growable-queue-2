@@ -25,22 +25,21 @@ namespace Simple_Base_Code
             {
                 bool rv;
 
-                if (_rear == _max - 1)
+                if (_rear == _max - 1 && _size != _max)
                 {
                     _rear = -1;
                 }
 
                 if (_size == _max)
                 {
-                    rv = false;
+                    growQueue();
                 }
-                else
-                {
-                    _rear++;
-                    _qArray[_rear] = item;
-                    _size++;
-                    rv = true;
-                }
+
+                _rear++;
+                _qArray[_rear] = item;
+                _size++;
+                rv = true;
+                
 
                 return rv;
             }
@@ -65,6 +64,29 @@ namespace Simple_Base_Code
                     _size--;
                 }
                 return rv;
+            }
+
+            public void growQueue()
+            {
+                int[] newArray = new int[_max * 2];
+
+                int i = _front;
+                do
+                {
+                    newArray[i] = _qArray[i];
+                    if (i == _rear) break;
+                    i++;
+                    if (i == _max)
+                    {
+                        i = 0;
+                    }
+                } while (true);
+
+                _qArray = newArray;
+                _max = _max * 2;
+
+                Console.WriteLine("\nThe queue has been updated and can now hold " + _qArray.Length + " items.");
+
             }
 
             public void printQueue()
@@ -145,7 +167,36 @@ namespace Simple_Base_Code
             Console.WriteLine("\n Does that mean the queue is empty? " + Q.isEmpty());
             Console.WriteLine();
 
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < 10; i++)
+            {
+                Console.Write("Enqueue of {0} ", i * 10);
+                if (Q.enqueue(i * 10))
+                {
+                    Console.WriteLine("Successful");
+                }
+                else
+                {
+                    Console.WriteLine("Unsuccessful");
+                }
+            }
+
+            Console.WriteLine("\nPrintout of queue\n--------------------");
+            Q.printQueue();
+            Console.WriteLine("\n This queue has " + Q.Size() + " items.");
+            Console.WriteLine("\n Does that mean the queue is empty? " + Q.isEmpty());
+            Console.WriteLine("\n Is 0 next in Queue? " + Q.Peek(0));
+            Console.WriteLine();
+
+            Q.enqueue(1);
+
+            Console.WriteLine("\nPrintout of queue\n--------------------");
+            Q.printQueue();
+            Console.WriteLine("\n This queue has " + Q.Size() + " items.");
+            Console.WriteLine("\n Does that mean the queue is empty? " + Q.isEmpty());
+            Console.WriteLine("\n Is 0 next in Queue? " + Q.Peek(0));
+            Console.WriteLine();
+
+            for (int i = 10; i < 20; i++)
             {
                 Console.Write("Enqueue of {0} ", i * 10);
                 if (Q.enqueue(i * 10))
